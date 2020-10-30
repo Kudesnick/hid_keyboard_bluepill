@@ -13,17 +13,16 @@
 #include "usb_hid.h"
  
 // User Provided HID Report Descriptor
-// for standard mouse (size of this descriptor is 52 bytes)
 extern 
 const uint8_t usbd_hid0_report_descriptor[];
 const uint8_t usbd_hid0_report_descriptor[] = {
 
-    // Keyboard Top-Level Collection (TLC)
+    // Keyboard Top-Level Collection (TLC) size 65 bytes
 
     HID_UsagePage(HID_USAGE_PAGE_GENERIC),
     HID_Usage(HID_USAGE_GENERIC_KEYBOARD),
     HID_Collection(HID_Application),
-        HID_ReportID(0x01),
+//        HID_ReportID(0x01),
         HID_UsagePage(HID_USAGE_PAGE_KEYBOARD),
         HID_UsageMin(HID_USAGE_KEYBOARD_LCTRL),
         HID_UsageMax(HID_USAGE_KEYBOARD_RGUI),
@@ -51,15 +50,14 @@ const uint8_t usbd_hid0_report_descriptor[] = {
         HID_UsagePage(HID_USAGE_PAGE_KEYBOARD),
         HID_UsageMin(0),
         HID_UsageMax(101),
-        HID_Input(HID_Data | HID_Variable | HID_Absolute),
+        HID_Input(HID_Data | HID_Array | HID_Absolute),
     HID_EndCollection,
-
-    // Mouse TLC
-
+/*
+    // Mouse TLC size 54 bytes
     HID_UsagePage(HID_USAGE_PAGE_GENERIC),
     HID_Usage(HID_USAGE_GENERIC_MOUSE),
     HID_Collection(HID_Application),
-        HID_ReportID(0x02),
+//        HID_ReportID(0x02),
         HID_Usage(HID_USAGE_GENERIC_POINTER),
         HID_Collection(HID_Physical),
             HID_UsagePage(HID_USAGE_PAGE_BUTTON),
@@ -84,6 +82,7 @@ const uint8_t usbd_hid0_report_descriptor[] = {
             HID_Input(HID_Data | HID_Variable | HID_Relative),
         HID_EndCollection,
     HID_EndCollection,
+*/
 };
 
 // Called during USBD_Initialize to initialize the USB HID class instance.

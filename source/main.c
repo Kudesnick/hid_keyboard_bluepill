@@ -3,6 +3,7 @@
 #include "cmsis_os.h"
 #include "rl_usb.h"
 #include "GPIO_STM32F10x.h"
+#include "usb_hid_keys.h"
 
 /*------------------------------------------------------------------------------
  * MDK Middleware - Component ::USB:Device
@@ -12,7 +13,8 @@
  * Purpose: USB Device Human Interface Device example program
  *----------------------------------------------------------------------------*/
 void usb_handle (void) {
-  uint8_t buf[1];
+  uint8_t buf1[8] = {KEY_LEFTMETA, KEY_L, 0 ,0 ,0, 0, 0, 0};
+  uint8_t buf2[8] = {0};
 
     // Emulate USB disconnect (USB_DP) ->
     GPIO_PortClock(GPIOA, true);
@@ -26,8 +28,13 @@ void usb_handle (void) {
   USBD_Connect       (0);               /* USB Device 0 Connect               */
 
   while (1) {                           /* Loop forever                       */
-    USBD_HID_GetReportTrigger(0, 0, &buf[0], 1);
-    osDelay(100);                       /* 100 ms delay for sampling buttons  */
+    osDelay(2000);
+    if (USBD_Configured (0))
+    {
+      USBD_HID_GetReportTrigger(0, 0, buf1, sizeof(buf1));
+      USBD_HID_GetReportTrigger(0, 0, buf2, sizeof(buf2));
+      osDelay(2000);                       /* 100 ms delay for sampling buttons  */
+    }
   }
 }
 

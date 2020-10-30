@@ -3,4 +3,4 @@ output/
 */JLinkLog.txt
 *.uvguix.*
 *.scvd
-*.uvguiopt*
+*.uvopt*
