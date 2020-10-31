@@ -127,11 +127,11 @@
 
 //     <o.0..4>Number of Input Reports <1-32>
 //     <i>Configures max 'rid' value for USBD_HID0_GetReport and USBD_HID_GetReportTrigger
-#define USBD_HID0_IN_REPORT_NUM                   3
+#define USBD_HID0_IN_REPORT_NUM                   2
 
 //     <o.0..4>Number of Output Reports <1-32>
 //     <i>Configures max 'rid' value for USBD_HID0_SetReport
-#define USBD_HID0_OUT_REPORT_NUM                  3
+#define USBD_HID0_OUT_REPORT_NUM                  2
 
 //     <o.0..15>Maximum Input Report Size (in bytes) <1-65535>
 //     <i>Allocates memory and configures 'len' value for USBD_HID0_GetReport
@@ -141,7 +141,7 @@
 //     <o.0..15>Maximum Output Report Size (in bytes) <1-65535>
 //     <i>Allocates memory and configures 'len' value for USBD_HID0_SetReport
 //     <i>when rtype=HID_REPORT_OUTPUT.
-#define USBD_HID0_OUT_REPORT_MAX_SZ               8
+#define USBD_HID0_OUT_REPORT_MAX_SZ               1
 
 //     <o.0..15>Maximum Feature Report Size (in bytes) <1-65535>
 //     <i>Allocates memory and configures 'len' value for USBD_HID0_SetReport
