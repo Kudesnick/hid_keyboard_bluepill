@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "cmsis_os.h"
 #include "rl_usb.h"
@@ -13,15 +14,14 @@
  * Purpose: USB Device Human Interface Device example program
  *----------------------------------------------------------------------------*/
 void usb_handle (void) {
-  uint8_t buf1[8] = {KEY_LEFTMETA, KEY_L, 0 ,0 ,0, 0, 0, 0};
-  uint8_t buf2[8] = {0};
+  uint8_t buf[8] = {KEY_MOD_LMETA, 0, 0, 0 ,0, 0, 0, KEY_L};
 
     // Emulate USB disconnect (USB_DP) ->
     GPIO_PortClock(GPIOA, true);
     GPIO_PinConfigure(GPIOA, 12, GPIO_OUT_OPENDRAIN, GPIO_MODE_OUT2MHZ);
     GPIO_PinWrite(GPIOA, 12, 0);
     
-	osDelay(10);
+	osDelay(20);
     // Emulate USB disconnect (USB_DP) <-
 
   USBD_Initialize    (0);               /* USB Device 0 Initialization        */
@@ -31,10 +31,13 @@ void usb_handle (void) {
     osDelay(2000);
     if (USBD_Configured (0))
     {
-      USBD_HID_GetReportTrigger(0, 0, buf1, sizeof(buf1));
-      USBD_HID_GetReportTrigger(0, 0, buf2, sizeof(buf2));
-      osDelay(2000);                       /* 100 ms delay for sampling buttons  */
+      USBD_HID_GetReportTrigger(0, 1, buf, sizeof(buf));
+      osDelay(100);
+      memset(buf, 0, sizeof(buf));
+      USBD_HID_GetReportTrigger(0, 1, buf, sizeof(buf));
+      osDelay(2000);                    /* 100 ms delay for sampling buttons  */
     }
+    while(1);
   }
 }
 

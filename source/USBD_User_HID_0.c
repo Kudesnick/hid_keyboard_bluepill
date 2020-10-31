@@ -22,7 +22,7 @@ const uint8_t usbd_hid0_report_descriptor[] = {
     HID_UsagePage(HID_USAGE_PAGE_GENERIC),
     HID_Usage(HID_USAGE_GENERIC_KEYBOARD),
     HID_Collection(HID_Application),
-//        HID_ReportID(0x01),
+        HID_ReportID(0x01),
         HID_UsagePage(HID_USAGE_PAGE_KEYBOARD),
         HID_UsageMin(HID_USAGE_KEYBOARD_LCTRL),
         HID_UsageMax(HID_USAGE_KEYBOARD_RGUI),
