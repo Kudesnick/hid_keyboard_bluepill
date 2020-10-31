@@ -13,32 +13,39 @@
  * Name:    HID.c
  * Purpose: USB Device Human Interface Device example program
  *----------------------------------------------------------------------------*/
-void usb_handle (void) {
-  uint8_t buf[8] = {KEY_MOD_LMETA, 0, 0, 0 ,0, 0, 0, KEY_L};
-
+void usb_handle (void)
+{
+    uint8_t keybrd[] = {KEY_MOD_LMETA, 0, 0, 0 ,0, 0, 0, KEY_L};
+    uint8_t  mouse[] = {MOUSE_BTN_RIGHT, 15, 15, 0};
+    
     // Emulate USB disconnect (USB_DP) ->
     GPIO_PortClock(GPIOA, true);
     GPIO_PinConfigure(GPIOA, 12, GPIO_OUT_OPENDRAIN, GPIO_MODE_OUT2MHZ);
     GPIO_PinWrite(GPIOA, 12, 0);
     
-	osDelay(20);
+    osDelay(20);
     // Emulate USB disconnect (USB_DP) <-
-
-  USBD_Initialize    (0);               /* USB Device 0 Initialization        */
-  USBD_Connect       (0);               /* USB Device 0 Connect               */
-
-  while (1) {                           /* Loop forever                       */
+    
+    USBD_Initialize    (0);               /* USB Device 0 Initialization        */
+    USBD_Connect       (0);               /* USB Device 0 Connect               */
+    
+    while(!USBD_Configured(0)){};
     osDelay(2000);
-    if (USBD_Configured (0))
-    {
-      USBD_HID_GetReportTrigger(0, 1, buf, sizeof(buf));
-      osDelay(100);
-      memset(buf, 0, sizeof(buf));
-      USBD_HID_GetReportTrigger(0, 1, buf, sizeof(buf));
-      osDelay(2000);                    /* 100 ms delay for sampling buttons  */
-    }
-    while(1);
-  }
+    
+    USBD_HID_GetReportTrigger(0, 2, mouse, sizeof(mouse));
+    osDelay(100);
+    memset(mouse, 0, sizeof(mouse));
+    USBD_HID_GetReportTrigger(0, 2, mouse, sizeof(mouse));
+    osDelay(2000);                    /* 100 ms delay for sampling buttons  */
+    
+    
+    USBD_HID_GetReportTrigger(0, 1, keybrd, sizeof(keybrd));
+    osDelay(100);
+    memset(keybrd, 0, sizeof(keybrd));
+    USBD_HID_GetReportTrigger(0, 1, keybrd, sizeof(keybrd));
+    osDelay(2000);                    /* 100 ms delay for sampling buttons  */
+    
+    while(1){};
 }
 
 int main(void)

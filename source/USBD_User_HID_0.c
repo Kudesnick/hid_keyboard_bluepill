@@ -18,7 +18,6 @@ const uint8_t usbd_hid0_report_descriptor[];
 const uint8_t usbd_hid0_report_descriptor[] = {
 
     // Keyboard Top-Level Collection (TLC) size 65 bytes
-
     HID_UsagePage(HID_USAGE_PAGE_GENERIC),
     HID_Usage(HID_USAGE_GENERIC_KEYBOARD),
     HID_Collection(HID_Application),
@@ -52,24 +51,24 @@ const uint8_t usbd_hid0_report_descriptor[] = {
         HID_UsageMax(101),
         HID_Input(HID_Data | HID_Array | HID_Absolute),
     HID_EndCollection,
-/*
+
     // Mouse TLC size 54 bytes
     HID_UsagePage(HID_USAGE_PAGE_GENERIC),
     HID_Usage(HID_USAGE_GENERIC_MOUSE),
     HID_Collection(HID_Application),
-//        HID_ReportID(0x02),
+        HID_ReportID(0x02),
         HID_Usage(HID_USAGE_GENERIC_POINTER),
         HID_Collection(HID_Physical),
             HID_UsagePage(HID_USAGE_PAGE_BUTTON),
             HID_UsageMin(1),
-            HID_UsageMax(3),
+            HID_UsageMax(5),
             HID_LogicalMin(0),
             HID_LogicalMax(1),
-            HID_ReportCount(3),
+            HID_ReportCount(5),
             HID_ReportSize(1),
             HID_Input(HID_Data | HID_Variable | HID_Absolute),
             HID_ReportCount(1),
-            HID_ReportSize(5),
+            HID_ReportSize(3),
             HID_Input(HID_Constant | HID_Variable | HID_Absolute),
             HID_UsagePage(HID_USAGE_PAGE_GENERIC),
             HID_Usage(HID_USAGE_GENERIC_X),
@@ -82,7 +81,6 @@ const uint8_t usbd_hid0_report_descriptor[] = {
             HID_Input(HID_Data | HID_Variable | HID_Relative),
         HID_EndCollection,
     HID_EndCollection,
-*/
 };
 
 // Called during USBD_Initialize to initialize the USB HID class instance.
