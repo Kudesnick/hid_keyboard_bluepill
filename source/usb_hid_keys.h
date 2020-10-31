@@ -13,6 +13,15 @@
 #define USB_HID_KEYS
 
 /**
+ * Mouse btns
+ */
+#define MOUSE_BTN_LEFT    0x01
+#define MOUSE_BTN_RIGHT   0x02
+#define MOUSE_BTN_WHEEL   0x04
+#define MOUSE_BTN_BACK    0x08
+#define MOUSE_BTN_FORWARD 0x10
+
+/**
  * Modifier masks - used for the first byte in the HID report.
  * NOTE: The second byte in the report is reserved, 0x00
  */
