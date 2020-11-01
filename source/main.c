@@ -118,6 +118,26 @@ void usb_handle (void)
                                 break;
                         }
                         break;
+/*
+                    // Btn "power down"
+                    case 1:
+                        switch (btn[i].state)
+                        {
+                            case CTL_BTN_ON:
+                                {
+                                    uint8_t pwr[] = {1};
+                                    USBD_HID_GetReportTrigger(0, 4, pwr, sizeof(pwr));
+                                }
+                                break;
+                            case CTL_BTN_OFF:
+                                {
+                                    uint8_t pwr[] = {0};
+                                    USBD_HID_GetReportTrigger(0, 4, pwr, sizeof(pwr));
+                                }
+                                break;
+                        }
+                        break;
+*/
                 }
             }
         }
@@ -125,7 +145,7 @@ void usb_handle (void)
 }
 
 int main(void)
-{
+ {
     printf("main runing..\r\n");
     
     ctl_init();

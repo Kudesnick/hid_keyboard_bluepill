@@ -150,6 +150,19 @@ const uint8_t usbd_hid0_report_descriptor[] = {
     0x09, 0xEA,        //   Usage (Volume Decrement)
     0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     0xC0,              // End Collection
+    
+    // size 21 byte
+    0x05, 0x01, /* Usage Page (Generic Desktop)            		 */
+    0x09, 0x80, /* Usage (System Control)                		 */
+    0xA1, 0x01,	/* Collection (Application)                 	 */
+	0x85, 0x04, /*    Report ID 0x04	[SYSTEM CTRL]			 */
+	HID_UsageMin(HID_USAGE_GENERIC_SYSCTL_POWER),
+    HID_UsageMax(HID_USAGE_GENERIC_SYSCTL_WAKE),
+    0x95, 0x02,	/*    Report count (3)            		         */
+	0x81, 0x06,	/*    Input (data, variable, relative,Preferred) */
+    0x95, 0x06,	/*    Report count (5)            		         */
+   	0x81, 0x01,	/*    Input (Constant, array Absolute)           */
+    0xC0,       /* End Collection                           	 */
 };
 
 // Called during USBD_Initialize to initialize the USB HID class instance.
