@@ -200,10 +200,20 @@ bool USBD_HID0_SetReport (uint8_t rtype, uint8_t req, uint8_t rid, const uint8_t
  
   switch (rtype) {
     case HID_REPORT_OUTPUT:
-      /*
-        buf: Received Data
-        len: Received Data Length
-      */
+      switch (req) {
+        case HID_REQUEST_GET_REPORT:
+          if (rid == 1) // Keyboard
+          {
+            uint8_t leds = buf[0];
+            /*
+             * Keyboard leds
+             * 01 - Num lock 
+             * 02 - Caps lock
+             * 04 - Scroll lock
+             */
+          }
+          break;
+      }
       break;
     case HID_REPORT_FEATURE:
       break;
