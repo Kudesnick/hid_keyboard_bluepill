@@ -52,33 +52,79 @@ const uint8_t usbd_hid0_report_descriptor[] = {
         HID_Input(HID_Data | HID_Array | HID_Absolute),
     HID_EndCollection,
 
-    // Mouse TLC size 54 bytes
+    // Wheel.docx in "Enhanced Wheel Support in Windows Vista" on MS WHDC
+    // http://www.microsoft.com/whdc/device/input/wheel.mspx
+    // Mouse size 120 bytes
     HID_UsagePage(HID_USAGE_PAGE_GENERIC),
     HID_Usage(HID_USAGE_GENERIC_MOUSE),
     HID_Collection(HID_Application),
         HID_ReportID(0x02),
-        HID_Usage(HID_USAGE_GENERIC_POINTER),
-        HID_Collection(HID_Physical),
-            HID_UsagePage(HID_USAGE_PAGE_BUTTON),
-            HID_UsageMin(1),
-            HID_UsageMax(5),
-            HID_LogicalMin(0),
-            HID_LogicalMax(1),
-            HID_ReportCount(5),
-            HID_ReportSize(1),
-            HID_Input(HID_Data | HID_Variable | HID_Absolute),
-            HID_ReportCount(1),
-            HID_ReportSize(3),
-            HID_Input(HID_Constant | HID_Variable | HID_Absolute),
-            HID_UsagePage(HID_USAGE_PAGE_GENERIC),
-            HID_Usage(HID_USAGE_GENERIC_X),
-            HID_Usage(HID_USAGE_GENERIC_Y),
-            HID_Usage(HID_USAGE_GENERIC_WHEEL),
-            HID_LogicalMin((uint8_t)(-127)),
-            HID_LogicalMax(127),
-            HID_ReportSize(8),
-            HID_ReportCount(3),
-            HID_Input(HID_Data | HID_Variable | HID_Relative),
+        HID_Usage(0x02), // USAGE (Mouse)
+        HID_Collection(HID_Logical),
+            HID_Usage(HID_USAGE_GENERIC_POINTER),
+            HID_Collection(HID_Physical),
+                //-- Buttons
+                HID_UsagePage(HID_USAGE_PAGE_BUTTON),
+                HID_UsageMin(1),
+                HID_UsageMax(5),
+                HID_LogicalMin(0),
+                HID_LogicalMax(1),
+                HID_ReportCount(5),
+                HID_ReportSize(1),
+                HID_Input(HID_Data | HID_Variable | HID_Absolute),
+                //--  Padding
+                HID_ReportCount(1),
+                HID_ReportSize(3),
+                HID_Input(HID_Constant | HID_Variable | HID_Absolute),
+                //-- X,Y position
+                HID_UsagePage(HID_USAGE_PAGE_GENERIC),
+                HID_Usage(HID_USAGE_GENERIC_X),
+                HID_Usage(HID_USAGE_GENERIC_Y),
+                HID_LogicalMin((uint8_t)(-127)),
+                HID_LogicalMax(127),
+                HID_ReportSize(8),
+                HID_ReportCount(2),
+                HID_Input(HID_Data | HID_Variable | HID_Relative),
+                //-- Vertical wheel res multiplier
+                HID_Collection(HID_Logical),
+                    HID_Usage(0x48), // USAGE (Resolution Multiplier)
+                    HID_LogicalMin(0),
+                    HID_LogicalMax(1),
+                    HID_PhysicalMin(1),
+                    HID_PhysicalMax(4),
+                    HID_ReportSize(2),
+                    HID_ReportCount(1),
+                    HID_Push,
+                    HID_Feature(HID_Data | HID_Variable | HID_Absolute),
+                    //-- Vertical wheel
+                    HID_Usage(HID_USAGE_GENERIC_WHEEL),
+                    HID_LogicalMin((uint8_t)(-127)),
+                    HID_LogicalMax(127),
+                    HID_PhysicalMin(0),
+                    HID_PhysicalMax(0),
+                    HID_ReportSize(8),
+                    HID_Input(HID_Data | HID_Variable | HID_Relative),
+                HID_EndCollection,
+                //-- Horizontal wheel res multiplier
+                HID_Collection(HID_Logical),
+                                    
+                    HID_Usage(0x48), // USAGE (Resolution Multiplier)
+                    HID_Pop,
+                    HID_Feature(HID_Data | HID_Variable | HID_Absolute),
+                    //-- Padding for Feature report
+                    HID_PhysicalMin(0),
+                    HID_PhysicalMax(0),
+                    HID_ReportSize(4),
+                    HID_Feature(HID_Constant | HID_Variable | HID_Absolute),
+                    //-- Horizontal wheel
+                    HID_UsagePage(0x0c), // USAGE_PAGE (Consumer Devices)
+                    0x0a, 0x38, 0x02,  // USAGE (AC Pan)
+                    HID_LogicalMin((uint8_t)(-127)),
+                    HID_LogicalMax(127),
+                    HID_ReportSize(8),
+                    HID_Input(HID_Data | HID_Variable | HID_Relative),
+                HID_EndCollection,
+            HID_EndCollection,
         HID_EndCollection,
     HID_EndCollection,
 };
@@ -154,10 +200,20 @@ bool USBD_HID0_SetReport (uint8_t rtype, uint8_t req, uint8_t rid, const uint8_t
  
   switch (rtype) {
     case HID_REPORT_OUTPUT:
-      /*
-        buf: Received Data
-        len: Received Data Length
-      */
+      switch (req) {
+        case HID_REQUEST_GET_REPORT:
+          if (rid == 1) // Keyboard
+          {
+            uint8_t leds = buf[0];
+            /*
+             * Keyboard leds
+             * 01 - Num lock 
+             * 02 - Caps lock
+             * 04 - Scroll lock
+             */
+          }
+          break;
+      }
       break;
     case HID_REPORT_FEATURE:
       break;
