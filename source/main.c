@@ -16,7 +16,7 @@
 void usb_handle (void)
 {
     uint8_t keybrd[] = {KEY_MOD_LMETA, 0, 0, 0 ,0, 0, 0, KEY_L};
-    uint8_t  mouse[] = {MOUSE_BTN_RIGHT, 15, 15, 0};
+    uint8_t  mouse[] = {0, 0, 0, 0, 2};
     
     // Emulate USB disconnect (USB_DP) ->
     GPIO_PortClock(GPIOA, true);
@@ -39,11 +39,11 @@ void usb_handle (void)
     osDelay(2000);                    /* 100 ms delay for sampling buttons  */
     
     
-    USBD_HID_GetReportTrigger(0, 1, keybrd, sizeof(keybrd));
-    osDelay(100);
-    memset(keybrd, 0, sizeof(keybrd));
-    USBD_HID_GetReportTrigger(0, 1, keybrd, sizeof(keybrd));
-    osDelay(2000);                    /* 100 ms delay for sampling buttons  */
+//    USBD_HID_GetReportTrigger(0, 1, keybrd, sizeof(keybrd));
+//    osDelay(100);
+//    memset(keybrd, 0, sizeof(keybrd));
+//    USBD_HID_GetReportTrigger(0, 1, keybrd, sizeof(keybrd));
+//    osDelay(2000);                    /* 100 ms delay for sampling buttons  */
     
     while(1){};
 }
