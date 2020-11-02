@@ -11,14 +11,25 @@ void ctl_init(void)
 {
     GPIO_PortClock(CTL_PORT, true);
     // Btns config
+#if CTL_BTN_ON == 1
     GPIO_PinConfigure(CTL_PORT, CTL_BTN1_PIN, GPIO_IN_PULL_DOWN, GPIO_MODE_INPUT);
     GPIO_PinConfigure(CTL_PORT, CTL_BTN2_PIN, GPIO_IN_PULL_DOWN, GPIO_MODE_INPUT);
+#else
+    GPIO_PinConfigure(CTL_PORT, CTL_BTN1_PIN, GPIO_IN_PULL_UP, GPIO_MODE_INPUT);
+    GPIO_PinConfigure(CTL_PORT, CTL_BTN2_PIN, GPIO_IN_PULL_UP, GPIO_MODE_INPUT);
+#endif
     // Leds config
+#if CTL_LED_ON == 1
+    GPIO_PinConfigure(CTL_PORT, CTL_LED1_PIN, GPIO_OUT_PUSH_PULL, GPIO_MODE_OUT2MHZ);
+    GPIO_PinConfigure(CTL_PORT, CTL_LED2_PIN, GPIO_OUT_PUSH_PULL, GPIO_MODE_OUT2MHZ);
+    GPIO_PinConfigure(CTL_PORT, CTL_LED3_PIN, GPIO_OUT_PUSH_PULL, GPIO_MODE_OUT2MHZ);
+#else
     GPIO_PinConfigure(CTL_PORT, CTL_LED1_PIN, GPIO_OUT_OPENDRAIN, GPIO_MODE_OUT2MHZ);
-    GPIO_PinWrite(CTL_PORT, CTL_LED1_PIN, CTL_LED_ON);
     GPIO_PinConfigure(CTL_PORT, CTL_LED2_PIN, GPIO_OUT_OPENDRAIN, GPIO_MODE_OUT2MHZ);
-    GPIO_PinWrite(CTL_PORT, CTL_LED2_PIN, CTL_LED_ON);
     GPIO_PinConfigure(CTL_PORT, CTL_LED3_PIN, GPIO_OUT_OPENDRAIN, GPIO_MODE_OUT2MHZ);
+#endif
+    GPIO_PinWrite(CTL_PORT, CTL_LED1_PIN, CTL_LED_ON);
+    GPIO_PinWrite(CTL_PORT, CTL_LED2_PIN, CTL_LED_ON);
     GPIO_PinWrite(CTL_PORT, CTL_LED3_PIN, CTL_LED_ON);
 }
 
@@ -38,8 +49,8 @@ struct btn_s
  *----------------------------------------------------------------------------*/
 void usb_handle (void)
 {
-    uint8_t keybrd[] = {KEY_MOD_LMETA, 0, 0, 0 ,0, 0, 0, KEY_L};
-    uint8_t  mouse[] = {0, 0, 0, 0, 2};
+//    uint8_t keybrd[] = {KEY_MOD_LMETA, 0, 0, 0 ,0, 0, 0, KEY_L};
+//    uint8_t  mouse[] = {0, 0, 0, 0, 2};
     
     // Emulate USB disconnect (USB_DP) ->
     GPIO_PortClock(GPIOA, true);
@@ -100,6 +111,8 @@ void usb_handle (void)
                                 break;
                         }
                         break;
+
+/*
                     // Btn "volume up"
                     case 1:
                         switch (btn[i].state)
@@ -118,7 +131,8 @@ void usb_handle (void)
                                 break;
                         }
                         break;
-/*
+*/
+
                     // Btn "power down"
                     case 1:
                         switch (btn[i].state)
@@ -137,7 +151,6 @@ void usb_handle (void)
                                 break;
                         }
                         break;
-*/
                 }
             }
         }
